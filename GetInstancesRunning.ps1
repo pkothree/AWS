@@ -1,6 +1,7 @@
 #Danny Davis
 # http://danny-davis.net
 # 3/6/2015
+# edit 6/3/2015
 
 #Set Filter params for status
 $filter = New-Object Amazon.EC2.Model.Filter
@@ -18,4 +19,5 @@ $instance = Get-EC2Instance -Filter $filter -region $region
 #display the instanceid
 write-host $instance.Instances.InstanceID
 
+write-host "------"
 }
