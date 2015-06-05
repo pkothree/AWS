@@ -21,7 +21,8 @@ foreach($file in $files)
     if($file.key -ne "")
     {
         write-host "File: " $file.Key
-        Copy-S3Object -BucketName $s3bucket -Key $file.Key -LocalFile -AccessKey $access -SecretKey $secret #-Region $region
+        $localfile = $path + $file
+        Copy-S3Object -BucketName $s3bucket -Key $file.Key -LocalFile $localfile -AccessKey $access -SecretKey $secret #-Region $region
     }
 }
 
