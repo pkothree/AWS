@@ -13,17 +13,28 @@ $folder = "FolderNameInS3Bucket"
 $path = "LocalPath"
 
 write-host "Getting the bucket: " $s3bucket
-$files = Get-S3Object -BucketName $s3bucket -KeyPrefix $folder -AccessKey $access -SecretKey $secret #-Region $region
-
-write-host "crawling through files now..."
-foreach($file in $files)
+try
 {
-    if($file.key -ne "")
+    $files = Get-S3Object -BucketName $s3bucket -KeyPrefix $folder -AccessKey $access -SecretKey $secret #-Region $region
+
+    write-host "crawling through files now..."
+    foreach($file in $files)
     {
-        write-host "File: " $file.Key
-        $localfile = $path + $file
-        Copy-S3Object -BucketName $s3bucket -Key $file.Key -LocalFile $localfile -AccessKey $access -SecretKey $secret #-Region $region
+        if($file.key -ne "")
+        {
+            write-host "File: " $file.Key
+            $localfile = $path + $file
+            Copy-S3Object -BucketName $s3bucket -Key $file.Key -LocalFile $localfile -AccessKey $access -SecretKey $secret #-Region $region
+        }
     }
 }
+catch
+{
+    write-host "Error occured" -ForegroundColor Red 
+    write-host $error[0].Exception -ForegroundColor Red -BackgroundColor Yellow
+}
 
-Read-Host "Press ENTER to exist..."
+finally
+{
+    read-host "Press ENTER to exist..."
+}
